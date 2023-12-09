@@ -3,12 +3,18 @@ import cors from 'cors'
 import { createRouter } from './router'
 import tokenExtractor from './middlewares/token-extractor'
 import { NotFoundError, ValidationError } from './errors'
+import config from './config'
 
 export function createApp() {
   const app = express()
 
+  const corsConfiguration = {
+    origin: config.origins,
+    methods: 'GET,PUT',
+  }
+
   app.use(express.json())
-  app.use(cors())
+  app.use(cors(corsConfiguration))
   app.use(tokenExtractor)
 
   app.use('/', createRouter())
